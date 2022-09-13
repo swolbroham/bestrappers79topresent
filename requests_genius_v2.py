@@ -1,6 +1,7 @@
 import json
 import auth
 import unicodedata
+import re
 from requests_html import HTMLSession
 from urllib.parse import urlencode
 
@@ -68,8 +69,13 @@ class g_requests:
         if song_path == None:
             return None
         lyrics = self.session.get(song_path).html.find("div#lyrics-root", first=True).text
-        print(unicodedata.normalize("NFKD",lyrics))
-        # return unicodedata.normalize("NFKC", lyrics)
+        # if unicodedata.unicodedata.is_normalized("NFC", lyrics):
+        print(lyrics.split("\n"))
+        # print("NFC", unicodedata.is_normalized("NFC",lyrics))
+        # print("NFKC",unicodedata.is_normalized("NFKC", lyrics))
+        # print("NFD", unicodedata.is_normalized("NFD",lyrics))
+        # print("NFKD", unicodedata.is_normalized("NFKD",lyrics))
+
 
     def get_url(self, endpoint, params):
         return self.base_url + endpoint + "?" +urlencode(params)
@@ -77,4 +83,4 @@ class g_requests:
 
 
 S = g_requests(auth.access_token)
-S.get_songs("Grandmaster caz")
+S.get_songs("Snoop Lion")
